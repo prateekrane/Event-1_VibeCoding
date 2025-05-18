@@ -29,7 +29,6 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            overflow: hidden;
             color: white;
         }
 
@@ -40,8 +39,8 @@
         /* === GAME CONTAINER === */
         #game-container {
             position: relative;
-            width: 90vmin;
-            height: 90vmin;
+            width: 60vmin;
+            height: 60vmin;
             background-color: #111;
             display: grid;
             grid-template-columns: repeat(20, 1fr);
@@ -95,26 +94,97 @@
         /* === CONTROLS === */
         #controls {
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            gap: 50px;
+            align-items: center;
             flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            /* Add margin to prevent overlap */
+        }
+
+        .plus-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .middle-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .arrow {
+            min-width: 100px;
+            min-height: 100px;
+            padding: 0;
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
+            color: #fff;
+            border: 3px solid var(--neon-cyan);
+            box-shadow:
+                0 0 40px 10px var(--neon-blue),
+                0 0 60px 16px var(--neon-pink),
+                0 0 32px 8px var(--neon-cyan);
+            transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+            outline: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .arrow:hover,
+        .arrow:focus {
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-blue));
+            transform: scale(1.15);
+            box-shadow:
+                0 0 80px 24px var(--neon-cyan),
+                0 0 100px 32px var(--neon-pink),
+                0 0 48px 12px var(--neon-blue);
+        }
+
+        .spacer {
+            display: inline-block;
+            width: 10px;
+        }
+
+        .side-controls {
+            display: flex;
+            gap: 18px;
+            margin-top: 10px;
+            /* Add spacing between controls */
             justify-content: center;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 28px 56px;
             border: none;
-            background-color: var(--neon-purple);
-            color: white;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue), var(--neon-pink));
+            color: #fff;
             font-weight: bold;
-            border-radius: 10px;
+            font-size: 2rem;
+            border-radius: 20px;
             cursor: pointer;
-            box-shadow: 0 0 10px var(--neon-purple);
-            transition: transform 0.2s, background 0.2s;
+            box-shadow:
+                0 0 40px 10px var(--neon-blue),
+                0 0 60px 16px var(--neon-pink),
+                0 0 16px 4px var(--neon-purple);
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+            outline: 3px solid var(--neon-cyan);
+            outline-offset: 3px;
+            letter-spacing: 2px;
         }
 
-        button:hover {
-            background-color: var(--neon-blue);
-            transform: scale(1.05);
+        button:hover,
+        button:focus {
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink), var(--neon-purple));
+            transform: scale(1.12);
+            box-shadow:
+                0 0 60px 16px var(--neon-cyan),
+                0 0 80px 24px var(--neon-pink),
+                0 0 32px 8px var(--neon-blue);
         }
 
         /* === GAME OVER OVERLAY === */
@@ -137,12 +207,38 @@
 
         @media (max-width: 600px) {
             #game-container {
-                width: 95vmin;
-                height: 95vmin;
+                width: 80vmin;
+                height: 80vmin;
             }
 
             button {
-                padding: 8px 16px;
+                padding: 18px 32px;
+                font-size: 1.3rem;
+            }
+
+            .arrow {
+                min-width: 60px;
+                min-height: 60px;
+                font-size: 2rem;
+            }
+
+            .middle-row {
+                gap: 24px;
+            }
+
+            #controls {
+                margin-top: 10px;
+                /* Adjust margin for smaller screens */
+            }
+
+            .plus-controls {
+                gap: 8px;
+                /* Reduce gap for smaller screens */
+            }
+
+            .side-controls {
+                gap: 12px;
+                /* Adjust spacing for smaller screens */
             }
         }
     </style>
@@ -153,14 +249,19 @@
     <div id="score">Score: 0</div>
     <div id="game-container"></div>
     <div id="controls">
-        <button onclick="setDirection('up')">⬆️</button>
-        <div>
-            <button onclick="setDirection('left')">⬅️</button>
-            <button onclick="setDirection('right')">➡️</button>
+        <div class="plus-controls">
+            <button class="arrow up" onclick="setDirection('up')">⬆️</button>
+            <div class="middle-row">
+                <button class="arrow left" onclick="setDirection('left')">⬅️</button>
+                <span class="spacer"></span>
+                <button class="arrow right" onclick="setDirection('right')">➡️</button>
+            </div>
+            <button class="arrow down" onclick="setDirection('down')">⬇️</button>
         </div>
-        <button onclick="setDirection('down')">⬇️</button>
-        <button onclick="startGame()">Start</button>
-        <button onclick="togglePause()">Pause</button>
+        <div class="side-controls">
+            <button onclick="startGame()">Start</button>
+            <button onclick="togglePause()">Pause</button>
+        </div>
     </div>
 
     <div id="game-over">
@@ -175,7 +276,7 @@
         let direction = { x: 0, y: 0 };
         let food = {};
         let score = 0;
-        let interval = 150;
+        let interval = 200; // Start with a slower speed
         let gameInterval;
         let isPaused = false;
         let isGameOver = false;
@@ -205,10 +306,13 @@
                 left: { x: -1, y: 0 },
                 right: { x: 1, y: 0 },
             }[dir];
-            if (
-                (newDir.x === -direction.x && newDir.y === -direction.y) ||
-                (direction.x === 0 && direction.y === 0)
-            ) return;
+            // Allow first move from stopped state
+            if (direction.x === 0 && direction.y === 0) {
+                direction = newDir;
+                return;
+            }
+            // Prevent 180° turn
+            if (newDir.x === -direction.x && newDir.y === -direction.y) return;
             direction = newDir;
         }
 
@@ -256,12 +360,14 @@
                 score += 10;
                 scoreDisplay.textContent = "Score: " + score;
                 spawnFood();
-                if (interval > 60) interval -= 5; // Increase speed
-                clearInterval(gameInterval);
-                gameInterval = setInterval(() => {
-                    move();
-                    draw();
-                }, interval);
+                if (interval > 100) { // Only decrease speed if above a threshold
+                    interval -= 10; // Decrease interval to increase speed
+                    clearInterval(gameInterval);
+                    gameInterval = setInterval(() => {
+                        move();
+                        draw();
+                    }, interval);
+                }
             } else {
                 snake.pop();
             }
@@ -271,14 +377,14 @@
         function startGame() {
             score = 0;
             snake = [{ x: 10, y: 10 }];
-            direction = { x: 0, y: 0 };
+            direction = { x: 1, y: 0 }; // Start moving right
             spawnFood();
             scoreDisplay.textContent = "Score: 0";
             isPaused = false;
             isGameOver = false;
             gameOverScreen.style.display = "none";
             clearInterval(gameInterval);
-            interval = 150;
+            interval = 200; // Reset to initial slower speed
             gameInterval = setInterval(() => {
                 move();
                 draw();
