@@ -36,6 +36,28 @@
             text-shadow: 0 0 10px var(--neon-blue);
         }
 
+        /* === HEADER STYLING === */
+        #header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Center the text horizontally */
+            text-align: center;
+            /* Ensure text alignment is centered */
+            margin-bottom: 20px;
+            width: 100%;
+            /* Ensure it spans the full width */
+        }
+
+        /* === MAIN GAME AREA === */
+        #main {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
         /* === GAME CONTAINER === */
         #game-container {
             position: relative;
@@ -48,6 +70,7 @@
             gap: 1px;
             border: 2px solid var(--neon-pink);
             box-shadow: 0 0 30px var(--neon-pink);
+            margin-right: 40px;
         }
 
         .cell {
@@ -95,12 +118,9 @@
         #controls {
             display: flex;
             flex-direction: column;
-            gap: 50px;
+            gap: 30px;
             align-items: center;
-            flex-wrap: wrap;
             justify-content: center;
-            margin-top: 20px;
-            /* Add margin to prevent overlap */
         }
 
         .plus-controls {
@@ -114,7 +134,7 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 60px;
+            gap: 20px;
         }
 
         .arrow {
@@ -152,9 +172,8 @@
 
         .side-controls {
             display: flex;
-            gap: 18px;
-            margin-top: 10px;
-            /* Add spacing between controls */
+            gap: 15px;
+            margin-top: 20px;
             justify-content: center;
         }
 
@@ -206,61 +225,51 @@
         }
 
         @media (max-width: 600px) {
+            body {
+                flex-direction: column;
+            }
+
             #game-container {
-                width: 80vmin;
-                height: 80vmin;
-            }
-
-            button {
-                padding: 18px 32px;
-                font-size: 1.3rem;
-            }
-
-            .arrow {
-                min-width: 60px;
-                min-height: 60px;
-                font-size: 2rem;
-            }
-
-            .middle-row {
-                gap: 24px;
+                margin-right: 0;
+                margin-bottom: 20px;
             }
 
             #controls {
-                margin-top: 10px;
-                /* Adjust margin for smaller screens */
+                gap: 20px;
             }
 
-            .plus-controls {
-                gap: 8px;
-                /* Reduce gap for smaller screens */
+            .middle-row {
+                gap: 10px;
             }
 
             .side-controls {
-                gap: 12px;
-                /* Adjust spacing for smaller screens */
+                gap: 10px;
             }
         }
     </style>
 </head>
 
 <body>
-    <h1>Neo Light Snake</h1>
-    <div id="score">Score: 0</div>
-    <div id="game-container"></div>
-    <div id="controls">
-        <div class="plus-controls">
-            <button class="arrow up" onclick="setDirection('up')">⬆️</button>
-            <div class="middle-row">
-                <button class="arrow left" onclick="setDirection('left')">⬅️</button>
-                <span class="spacer"></span>
-                <button class="arrow right" onclick="setDirection('right')">➡️</button>
+    <div id="header">
+        <h1>Neo Light Snake</h1>
+        <div id="score">Score: 0</div>
+    </div>
+    <div id="main">
+        <div id="game-container"></div>
+        <div id="controls">
+            <div class="plus-controls">
+                <button class="arrow up" onclick="setDirection('up')">⬆️</button>
+                <div class="middle-row">
+                    <button class="arrow left" onclick="setDirection('left')">⬅️</button>
+                    <span class="spacer"></span>
+                    <button class="arrow right" onclick="setDirection('right')">➡️</button>
+                </div>
+                <button class="arrow down" onclick="setDirection('down')">⬇️</button>
             </div>
-            <button class="arrow down" onclick="setDirection('down')">⬇️</button>
-        </div>
-        <div class="side-controls">
-            <button onclick="startGame()">Start</button>
-            <button onclick="togglePause()">Pause</button>
+            <div class="side-controls">
+                <button onclick="startGame()">Start</button>
+                <button onclick="togglePause()">Pause</button>
+            </div>
         </div>
     </div>
 
